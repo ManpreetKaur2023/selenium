@@ -1,5 +1,7 @@
 package com.manpreet.LearningSelenium;
 
+import java.util.UUID;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -30,6 +32,9 @@ public class SeleniumFirstWeekAssignment {
 	@Test(priority = 1)
 	public void validateSignUp() {
 
+		String randomEmail = UUID.randomUUID().toString() + "@example.com"; // To generate unique random emailId.
+		String randomPassword = UUID.randomUUID().toString().substring(0, 8); // To generate unique random password.
+
 		WebElement myAccount = wait
 				.until(ExpectedConditions.elementToBeClickable(By.xpath("//span[text()='My Account']")));
 
@@ -44,41 +49,12 @@ public class SeleniumFirstWeekAssignment {
 		register.click();
 
 		Assert.assertEquals(wd.getTitle(), "Register Account", "You are on wrong page");
+		
+		
 
-		WebElement firstName = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("#input-firstname")));
+		enterValues("Manpreet", "Kaur", randomEmail, "12345678", randomPassword, randomPassword);   //Invoking the enterValues() method to find locator and enter values.
 
-		WebElement lastName = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("#input-lastname")));
 
-		WebElement email = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("#input-email")));
-
-		WebElement telephone = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("#input-telephone")));
-
-		WebElement password = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("#input-password")));
-
-		WebElement confirmPassword = wait
-				.until(ExpectedConditions.elementToBeClickable(By.cssSelector("#input-confirm")));
-
-		WebElement subscribeYes = wait
-				.until(ExpectedConditions.elementToBeClickable(By.xpath("(//input[@name='newsletter']) [1]")));
-
-		WebElement privacyPolicy = wait
-				.until(ExpectedConditions.elementToBeClickable(By.cssSelector("input[type='checkbox']")));
-
-		WebElement continueBtn = wait
-				.until(ExpectedConditions.elementToBeClickable(By.cssSelector("input[type='submit']")));
-
-		firstName.sendKeys("ManpreetKaur");
-		lastName.sendKeys("Saini");
-		email.sendKeys("manpreet1031@email.com");
-		telephone.sendKeys("123456789");
-		password.sendKeys("Password1");
-		confirmPassword.sendKeys("Password1");
-		subscribeYes.isSelected();
-		privacyPolicy.click();
-
-		boolean isContinueBtnEnabled = continueBtn.isEnabled();
-		Assert.assertTrue(isContinueBtnEnabled, "Continue button is not enabled");
-		continueBtn.submit();
 
 		Assert.assertEquals(wd.getTitle(), "Your Account Has Been Created!", "You are on wrong page");
 
@@ -86,63 +62,15 @@ public class SeleniumFirstWeekAssignment {
 
 	@Test(priority = 2)
 	public void validateLogin() {
-		wd.navigate().to("https://naveenautomationlabs.com/opencart/index.php?route=common/home");
 
-		WebElement myAccount = wait
-				.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//span[text()='My Account']")));
-		boolean isMyAccountFieldEnabled = myAccount.isEnabled();
-		Assert.assertTrue(isMyAccountFieldEnabled, "My Account field is not enabled");
-		myAccount.click();
-
-		WebElement login = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[text()='Login']")));
-
-		boolean isLoginFieldEnabled = login.isEnabled();
-		Assert.assertTrue(isLoginFieldEnabled, "Login field is not enabled");
-		login.click();
-		Assert.assertEquals(wd.getTitle(), "Account Login", "You are on wrong page");
-
-		WebElement email = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("#input-email")));
-
-		WebElement password = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("#input-password")));
-
-		WebElement loginBtn = wait
-				.until(ExpectedConditions.elementToBeClickable(By.cssSelector("input[value='Login']")));
-
-		email.sendKeys("manpreet222@email.com");
-		password.sendKeys("Password2");
-
-		boolean isLoginBtnEnabled = loginBtn.isEnabled();
-		Assert.assertTrue(isLoginBtnEnabled, "Login button  is not enabled");
-		loginBtn.submit();
-		Assert.assertEquals(wd.getTitle(), "My Account", "You are on wrong page");
-
-		WebElement myAccountForLogout = wait
-				.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//span[text()='My Account']")));
-		myAccountForLogout.click();
-		WebElement logout=wd.findElement(By.xpath("(//a[text()='Logout'])[1]"));
-		logout.click();
-		Assert.assertEquals(wd.getTitle(), "Account Logout","You are on wrong page");
-		
+		login(); // Invoking the login() method.
 
 	}
 
 	@Test(priority = 3)
 	public void validateChangePassword() {
-		wd.navigate().to("https://naveenautomationlabs.com/opencart/index.php?route=account/account");
 
-		WebElement email = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("#input-email")));
-
-		WebElement password = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("#input-password")));
-
-		WebElement loginBtn = wait
-				.until(ExpectedConditions.elementToBeClickable(By.cssSelector("input[value='Login']")));
-
-		email.sendKeys("manpreet222@email.com");
-		password.sendKeys("Password2");
-		boolean isLoginBtnEnabled = loginBtn.isEnabled();
-		Assert.assertTrue(isLoginBtnEnabled, "Login button  is not enabled");
-		loginBtn.submit();
-		Assert.assertEquals(wd.getTitle(), "My Account", "You are on wrong page");
+		login(); // Invoking the login() method.
 
 		WebElement changePassword = wait
 				.until(ExpectedConditions.elementToBeClickable(By.xpath("//a[text()='Change your password']")));
@@ -176,6 +104,10 @@ public class SeleniumFirstWeekAssignment {
 		Assert.assertEquals(passwordChangeConfitmationMessgae, "Success: Your password has been successfully updated.",
 				"You are on wrong page.");
 
+		logout(); // Invoking the logout() method after changing password.
+
+		login(); // Invoking the login() method after changing the password.
+
 	}
 
 	@AfterMethod
@@ -183,4 +115,86 @@ public class SeleniumFirstWeekAssignment {
 		wd.close();
 	}
 
+	public void login() {
+		WebElement myAccount = wait
+				.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//span[text()='My Account']")));
+		boolean isMyAccountFieldEnabled = myAccount.isEnabled();
+		Assert.assertTrue(isMyAccountFieldEnabled, "My Account field is not enabled");
+		myAccount.click();
+
+		WebElement login = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[text()='Login']")));
+
+		boolean isLoginFieldEnabled = login.isEnabled();
+		Assert.assertTrue(isLoginFieldEnabled, "Login field is not enabled");
+		login.click();
+		Assert.assertEquals(wd.getTitle(), "Account Login", "You are on wrong page");
+
+		WebElement email = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("#input-email")));
+
+		WebElement password = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("#input-password")));
+
+		WebElement loginBtn = wait
+				.until(ExpectedConditions.elementToBeClickable(By.cssSelector("input[value='Login']")));
+
+		email.sendKeys("manpreet222@email.com");
+		password.sendKeys("Password2");
+
+		boolean isLoginBtnEnabled = loginBtn.isEnabled();
+		Assert.assertTrue(isLoginBtnEnabled, "Login button  is not enabled");
+		loginBtn.submit();
+		Assert.assertEquals(wd.getTitle(), "My Account", "You are on wrong page");
+
+	}
+
+	public void logout() {
+		WebElement myAccount = wait
+				.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//span[text()='My Account']")));
+		myAccount.click();
+		WebElement logout = wd.findElement(By.xpath("(//a[text()='Logout'])[1]"));
+		logout.click();
+		Assert.assertEquals(wd.getTitle(), "Account Logout", "You are on wrong page");
+	}
+	
+	
+	
+	
+
+	public void enterValues(String firstNameValue, String lastnameValue, String emailValue, String telephoneValue,
+			String passwordValue, String confirmPasswordValue) {
+		
+		WebElement firstName = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("#input-firstname")));
+
+		WebElement lastName = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("#input-lastname")));
+
+		WebElement email = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("#input-email")));
+
+		WebElement telephone = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("#input-telephone")));
+
+		WebElement password = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("#input-password")));
+
+		WebElement confirmPassword = wait
+				.until(ExpectedConditions.elementToBeClickable(By.cssSelector("#input-confirm")));
+
+		WebElement subscribeYes = wait
+				.until(ExpectedConditions.elementToBeClickable(By.xpath("(//input[@name='newsletter']) [1]")));
+
+		WebElement privacyPolicy = wait
+				.until(ExpectedConditions.elementToBeClickable(By.cssSelector("input[type='checkbox']")));
+
+		WebElement continueBtn = wait
+				.until(ExpectedConditions.elementToBeClickable(By.cssSelector("input[type='submit']")));
+
+		firstName.sendKeys(firstNameValue);
+		lastName.sendKeys(lastnameValue);
+		email.sendKeys(emailValue);
+		telephone.sendKeys(telephoneValue);
+		password.sendKeys(passwordValue);
+		confirmPassword.sendKeys(confirmPasswordValue);
+		subscribeYes.isSelected();
+		privacyPolicy.click();
+
+		boolean isContinueBtnEnabled = continueBtn.isEnabled();
+		Assert.assertTrue(isContinueBtnEnabled, "Continue button is not enabled");
+		continueBtn.submit();
+	}
 }
