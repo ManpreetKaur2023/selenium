@@ -29,70 +29,36 @@ public class CheckOutTest extends TestBase {
 		demoStore = new DemoStore();
 	}
 
-	@Test(priority = 1)
-	public void validateUserRegister() {
+	@Test
+	public void validatePlaceOrderCheckoutProcess() {
+
 		register = demoStore.clickRegisterBtn();
-		register.selectGender();
-		register.enterFirstName();
-		register.enterLastName();
-		register.enterEmail();
-		register.enterCompanyName();
-		register.selectNewsletterCheckBox();
-		register.enterPassword();
-		register.enterConfirmPasswordField();
-		register = register.clickRegisterBtn();
-//System.out.println(register.getRegisterBtnText());
-
-		Assert.assertEquals(register.getRegisterTitle(), "nopCommerce demo store. Register", "Registeration Failed");
-
-//demoStore=register.clickContinueBtn();
-
-	}
-
-	@Test(priority = 2)
-	public void validateLoginWithPositivrCredential() {
-		login = demoStore.clickLoginBtn();
-		login.enterEmail();
-		login.enterPassword();
-		demoStore = login.clickLoginBtn();
-
-		Assert.assertEquals(wd.getTitle(), "nopCommerce demo store", "You are on wrong page");
-	}
-@Test(priority=3)
-	public void validateCheckoutProcess() {
-	     demoStore.selectComputerOption();
+		register = register.enterDetails();
+		demoStore.selectComputerOption();
 		desktops = demoStore.clickDesktopsBtn();
 		buildYourOwnComputer = desktops.clickAddToCartBtn();
-		buildYourOwnComputer.selectProcessorValue();
-		buildYourOwnComputer.selectRamValue();
-		buildYourOwnComputer.selectHddRadioBtn();
-		buildYourOwnComputer.selectOsRadioBtn();
-		buildYourOwnComputer.selectsoftwareCheckBox();
-		buildYourOwnComputer = buildYourOwnComputer.clickAddTocartBtn();
+		buildYourOwnComputer = buildYourOwnComputer.selectSpecifications();
 		shoppingCart = buildYourOwnComputer.clickShopingcartLink();
 		shoppingCart.clickTermsOfServiceCheckBox();
-		checkout = shoppingCart.clickCheckOutBtn();
-		checkout.enterFirstName();
-		checkout.enterLastName();
-		checkout.enterEmail();
-		checkout.enterCompanyName();
-		checkout.selectCountry();
-		checkout.entercityField();
-		checkout.enterAddress1Fiels();
-		checkout.enterAddress2Fiels();
-		checkout.enterPostalCodeField();
-		checkout.enterPhoneNumber();
-		checkout.enterFaxNumberField();
-		checkout=checkout.selectContinueBtn();
+		login = shoppingCart.clickCheckOutBtn();
+		login.enterLoginDetails();
+		shoppingCart = login.clickLoginBtn();
+		shoppingCart.clickTermsOfServiceCheckBox();
+		checkout = shoppingCart.clickCheckOutBtnForFinalCheckout();
+		checkout.enterAddressDetails();
+		checkout = checkout.selectContinueBtn();
+
 		checkout.selectShippingMethodRadioBtn();
-		checkout=checkout.selectContinueBtnAfterShippingMethod();
+		checkout = checkout.selectContinueBtnAfterShippingMethod();
+
 		checkout.selectPaymentMethodRadioBtn();
-		checkout=checkout.selectContinueBtnAfterpaymentMethod();
-		checkout=checkout.selectContinueBtnAfterpaymentInformation();
-		checkout=checkout.selectConfirmBtn();
-	String texts=	checkout.showThankyouTextMessage();
-	
-	Assert.assertEquals(texts, "Thank you","Checkout failed");
+		checkout = checkout.selectContinueBtnAfterpaymentMethod();
+
+		checkout = checkout.selectContinueBtnAfterpaymentInformation();
+
+		checkout = checkout.selectConfirmBtn();
+		Assert.assertEquals(checkout.showOrderSucessTextMessage(), "Your order has been successfully processed!",
+				"Checkout failed");
 
 	}
 

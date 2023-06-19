@@ -6,7 +6,7 @@
       <class name="com.nopcommerce.AutomationFramework2.Tests.CheckOutTest">
         <methods>
           <include name="setUp"/>
-          <include name="validateCheckoutProcess"/>
+          <include name="validatePlaceOrderCheckoutProcess"/>
         </methods>
       </class> <!-- com.nopcommerce.AutomationFramework2.Tests.CheckOutTest -->
     </classes>

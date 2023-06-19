@@ -66,11 +66,16 @@ public class DemoStore extends TestBase {
 	
 	
 	
-	@FindBy(xpath = "(//button[text()='Add to cart'])[2]")
-	private WebElement addToCartOfAppleMacBookBtn;
+	@FindBy(xpath = "//h2[text()='Welcome to our store']")
+	private WebElement welcomeMessageAfterLogin;
 	
 	
-
+	
+	public String getWelcomeMessageAfterLogin() {
+		return welcomeMessageAfterLogin.getText();
+		
+		
+	}
 	
 	@AfterMethod
 	public void quit() {

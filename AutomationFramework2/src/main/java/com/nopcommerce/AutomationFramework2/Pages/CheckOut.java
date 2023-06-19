@@ -69,7 +69,7 @@ PageFactory.initElements(wd, this);
 	@FindBy(xpath = "(//button[text()='Continue'])[3]")
 	private WebElement continueBtnAfterShippingMethod;
 	
-	@FindBy(css = "#paymentmethod_1")
+	@FindBy(css = "#paymentmethod_0")
 	private WebElement paymentMethodRadioBtn;
 	
 	@FindBy(xpath = "(//button[text()='Continue'])[4]")
@@ -82,26 +82,10 @@ PageFactory.initElements(wd, this);
 	private WebElement confirmBtn;
 	
 	
-	@FindBy(css = "div.page-title h1")
-	private WebElement thankYouText;
+	@FindBy(xpath = "//strong[text()='Your order has been successfully processed!']")
+	private WebElement orderSucessMessage;
 	
-	
-	
-	public void enterFirstName() {
-		firstNameField.sendKeys("Manpreet");
-	}
-	
-	public void enterLastName() {
-		lastNameField.sendKeys("kaur");
-	}
-	
-	public void enterEmail() {
-		emailField.sendKeys("manu12@gmail.com");
-	}
 
-	public void enterCompanyName() {
-		companyNameField.sendKeys("Pivot");
-	}
 	
 	public void selectCountry() {
 	Select sc=new Select(country);
@@ -113,14 +97,15 @@ PageFactory.initElements(wd, this);
 	}
 	
 	
-	public void enterAddress1Fiels() {
+	public void enterAddress1Field() {
 		address1Field.sendKeys("hello");
 	}
 	
 	
 	
 	
-	public void enterAddress2Fiels() {
+	
+	public void enterAddress2Field() {
 		address2Field.sendKeys("qwerty");
 	}
 	
@@ -139,6 +124,19 @@ PageFactory.initElements(wd, this);
 	public void enterFaxNumberField() {
 		faxNumberField.sendKeys("23344");
 	}
+	
+	
+	public void enterAddressDetails() {
+		selectCountry();
+		entercityField();
+		enterAddress1Field();
+		enterAddress2Field();
+		enterPostalCodeField();
+		enterPhoneNumber();
+		enterFaxNumberField();
+	}
+	
+	
 	
 	public CheckOut selectContinueBtn() {
 		continueBtn.click();
@@ -178,11 +176,13 @@ PageFactory.initElements(wd, this);
 	
 	
 	
-	public String showThankyouTextMessage() {
-		String text=thankYouText.getText();
-		return text;
+	public String showOrderSucessTextMessage() {
+		return orderSucessMessage.getText();
+		
 	}
 	
+	
+
 	
 	
 	

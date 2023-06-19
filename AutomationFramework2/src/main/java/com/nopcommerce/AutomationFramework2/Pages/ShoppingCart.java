@@ -8,49 +8,43 @@ import org.testng.annotations.BeforeMethod;
 
 import com.nopcommerce.AutomationFramework2.Base.TestBase;
 
-public class ShoppingCart  extends TestBase{
-	
+public class ShoppingCart extends TestBase {
+
 	public ShoppingCart() {
 		PageFactory.initElements(wd, this);
 	}
-	
+
 	@BeforeMethod
 	public void setUp() {
 		intialisation();
 	}
-	
 
 	@FindBy(css = "div.terms-of-service input")
 	private WebElement termsOfServiceCheckBox;
-	
-	
-	
 
-	@FindBy(css = "(div.checkout-buttons button")
+	@FindBy(css = "div.checkout-buttons button")
 	private WebElement checkOutBtn;
-	
-	
+
 	public void clickTermsOfServiceCheckBox() {
 		termsOfServiceCheckBox.click();
-		
-		
+
 	}
-	
-	
-	
-	public CheckOut clickCheckOutBtn() {
+
+	public Login clickCheckOutBtn() {
+		checkOutBtn.click();
+		return new Login();
+
+	}
+
+	public CheckOut clickCheckOutBtnForFinalCheckout() {
 		checkOutBtn.click();
 		return new CheckOut();
-		
+
 	}
-	
-	
-	
+
 	@AfterMethod
 	public void quit() {
 		tearDown();
 	}
 
-
 }
-//div.terms-of-service input

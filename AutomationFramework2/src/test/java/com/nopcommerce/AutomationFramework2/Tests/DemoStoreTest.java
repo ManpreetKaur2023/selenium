@@ -23,38 +23,26 @@ public class DemoStoreTest extends TestBase {
 		demoStore = new DemoStore();
 	}
 
-//	@Test(priority = 1)
-//	public void validateUserRegister() {
-//		register = demoStore.clickRegisterBtn();
-//		register.selectGender();
-//		register.enterFirstName();
-//		register.enterLastName();
-//		register.enterEmail();
-//		register.enterCompanyName();
-//		register.selectNewsletterCheckBox();
-//		register.enterPassword();
-//		register.enterConfirmPasswordField();
-//		register = register.clickRegisterBtn();
-////System.out.println(register.getRegisterBtnText());//////////
-//
-//		Assert.assertEquals(register.getRegisterTitle(), "nopCommerce demo store. Register", "Registeration Failed");
-//
-////demoStore=register.clickContinueBtn();////////////
-//
-//	}
-//	@Test(priority = 2)
-//public void validateLoginWithPositivrCredential() {
-//		login=demoStore.clickLoginBtn();
-//		login.enterEmail();
-//		login.enterPassword();
-//		demoStore=login.clickLoginBtn();
-//		
-//		Assert.assertEquals(wd.getTitle(), "nopCommerce demo store","You are on wrong page");
-//	}
+	@Test(priority = 1)
+	public void validateUserRegister() {
+
+		register = demoStore.clickRegisterBtn();
+		register = register.enterDetails();
+		Assert.assertEquals(register.getRegisterBtnText(), "Your registration completed", "Registeration Failed");
+
+	}
+
+	@Test(priority = 2)
+	public void validateLoginWithPositiveCredential() {
+		login = demoStore.clickLoginBtn();
+		login.enterLoginDetails();
+		demoStore = login.clickLoginBtnForvalidateLogin();
+		Assert.assertEquals(demoStore.getWelcomeMessageAfterLogin(), "Welcome to our store", "You are on wrong page");
+	}
 
 	@AfterMethod
 	public void quit() {
-		//tearDown();
+		tearDown();
 	}
 
 }

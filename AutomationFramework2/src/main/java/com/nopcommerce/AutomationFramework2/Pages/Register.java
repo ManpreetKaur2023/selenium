@@ -1,5 +1,7 @@
 package com.nopcommerce.AutomationFramework2.Pages;
 
+import java.util.UUID;
+
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
@@ -18,6 +20,10 @@ public class Register extends TestBase {
 	public void setUp() {
 		intialisation();
 	}
+	
+	//public  String randomEmail = UUID.randomUUID().toString() + "@email.com"; // To generate unique random emailId.
+	//public  String randomPassword = UUID.randomUUID().toString().substring(0, 8); // To generate unique random password.
+
 
 	@FindBy(css = "#gender-female")
 	private WebElement genderRadioBtnFemale;
@@ -46,11 +52,8 @@ public class Register extends TestBase {
 	@FindBy(id = "register-button")
 	private WebElement registerBtn;
 
-//	@FindBy(xpath = "//div[text()='Your registration completed']")
-//	private WebElement registerBtnText;
-
-//	@FindBy(id = "div.buttons")
-//	private WebElement continueBtn;
+	@FindBy(xpath = "//div[text()='Your registration completed']")
+	private WebElement registerBtnText;
 
 	public void selectGender() {
 		genderRadioBtnFemale.isSelected();
@@ -65,11 +68,11 @@ public class Register extends TestBase {
 	}
 
 	public void enterEmail() {
-		emailField.sendKeys("dj0@gmail.com");
+		emailField.sendKeys("man@gmail.com");
 	}
 
 	public void enterCompanyName() {
-		companynameField.sendKeys("Pivot");
+		companynameField.sendKeys("Password1");
 	}
 
 	public void selectNewsletterCheckBox() {
@@ -88,22 +91,24 @@ public class Register extends TestBase {
 		registerBtn.submit();
 		return new Register();
 	}
-//
-//	public String getRegisterBtnText() {
-//		return registerBtnText.getText();
-//		
-//	}
-//	
-	public String getRegisterTitle() {
-		return wd.getTitle();
+
+	public Register enterDetails() {
+		selectGender();
+		enterFirstName();
+		enterLastName();
+		enterEmail();
+		enterCompanyName();
+		selectNewsletterCheckBox();
+		enterPassword();
+		enterConfirmPasswordField();
+		return clickRegisterBtn();
 	}
 
-//	public DemoStore clickContinueBtn() {
-//		continueBtn.click();
-//		return new DemoStore();
-//	}
+	public String getRegisterBtnText() {
+		return registerBtnText.getText();
 
-	
+	}
+
 	@AfterMethod
 	public void quit() {
 		tearDown();
